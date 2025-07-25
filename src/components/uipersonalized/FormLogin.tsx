@@ -11,7 +11,8 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Loader2 } from "lucide-react"
-
+import { login } from "@/lib/auth/sessionHandler";
+import { loginUser } from "@/interface/interfaceAuth";
 export default function FormLogin() {
     const [formData, setFormData] = useState({
         email: '',
@@ -25,10 +26,21 @@ export default function FormLogin() {
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
 
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         
         setIsSubmitting(true);
+        const user: loginUser = {
+            email: formData.email,
+            password: formData.password
+        };
+        const response = await login(user);
+        if (!response.success) {
+            console.error("Error al iniciar sesión:", response.error);
+        }else {
+            console.log("Inicio de sesión exitoso:", response.data);
+        }
+        setIsSubmitting(false);
         console.log("Datos del formulario:", formData);
         
     }
@@ -40,7 +52,7 @@ export default function FormLogin() {
                 <CardDescription className="text-lg">Ingrese sus credenciales.</CardDescription>
             </CardHeader>
             <CardContent>
-                <form className="flex flex-col gap-4 px-0.5 pb-4 >" onSubmit={handleLogin}>
+                <form className="flex flex-col gap-4 px-0.5 pb-4 >" onSubmit={handleSubmit}>
                     <div className="flex flex-col ">
                         <label className="text-lg font-normal pb-4" htmlFor="email" >Correo electrónico:</label>
                         <input className=" border border-gray-400 text-lg px-2 py-2"
