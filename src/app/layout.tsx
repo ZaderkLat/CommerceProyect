@@ -4,6 +4,10 @@ import "./globals.css";
 import { ThemeProvider } from "../components/providers/theme-provider";
 import { NavBarLayout } from "@/components/uipersonalized/NavBarLayout";
 import { AuthProvider } from "@/components/providers/user-provider";
+import { Toaster } from "react-hot-toast";
+
+import CustomToaster from "@/components/uipersonalized/customToaster";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -38,7 +42,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <NavBarLayout />
+
             {children}
+            <CustomToaster/>
           </ThemeProvider>
         </AuthProvider>
       </body>

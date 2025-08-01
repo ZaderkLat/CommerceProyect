@@ -23,6 +23,9 @@ import {
 import { registerUser } from "@/interface/interfaceAuth";
 import { userData } from "@/interface/requestUser";
 import { createUser } from "@/controller/userController/userRequest";
+
+
+import AlertComponent from "@/components/uipersonalized/alert";
 export default function RegisterForm() {
 
     const [formData, setFormData] = useState({
@@ -118,8 +121,15 @@ export default function RegisterForm() {
                             onChange={handleChange}
                             value={formData.email}
                         />
-                        {errors.email && <span className="text-red-500 text-sm mt-1" >{errors.email}</span>}
-                        
+                        {errors.email &&
+                            <AlertComponent
+                                type="destructive"
+                                title=""
+                                description={errors.email}
+                                iconType="error"
+                            />
+                        }
+
                     </div>
 
                     {/* Contraseña */}
@@ -132,7 +142,13 @@ export default function RegisterForm() {
                             onChange={handleChange}
                             value={formData.password}
                         />
-                        {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
+                        {errors.password &&
+                            <AlertComponent
+                                type="destructive"
+                                title=""
+                                description={errors.password}
+                                iconType="error"
+                            />}
                     </div>
 
                     {/* Confirmar contraseña */}
@@ -145,7 +161,13 @@ export default function RegisterForm() {
                             onChange={handleChange}
                             value={formData.passwordConfirm}
                         />
-                        {errors.passwordConfirm && <span className="text-red-500 text-sm mt-1">{errors.passwordConfirm}</span>}
+                        {errors.passwordConfirm &&
+                            <AlertComponent
+                                type="destructive"
+                                title=""
+                                description={errors.passwordConfirm}
+                                iconType="error"
+                            />}
                     </div>
 
                     {/* Nombre */}
@@ -158,7 +180,13 @@ export default function RegisterForm() {
                             onChange={handleChange}
                             value={formData.firstName}
                         />
-                        {errors.firstName && <span className="text-red-500 text-sm mt-1">{errors.firstName}</span>}
+                        {errors.firstName &&
+                            <AlertComponent
+                                type="destructive"
+                                title=""
+                                description={errors.firstName}
+                                iconType="error"
+                            />}
                     </div>
 
                     {/* Apellido */}
@@ -171,12 +199,18 @@ export default function RegisterForm() {
                             onChange={handleChange}
                             value={formData.lastName}
                         />
-                        {errors.lastName && <span className="text-red-500 text-sm mt-1">{errors.lastName}</span>}
+                        {errors.lastName &&
+                            <AlertComponent
+                                type="destructive"
+                                title=""
+                                description={errors.lastName}
+                                iconType="error"
+                            />}
                     </div>
 
                     {/* Teléfono */}
                     <div className="flex flex-col">
-                        <label className="text-lg font-normal pb-2"  htmlFor="phoneNumber">Número de teléfono:</label>
+                        <label className="text-lg font-normal pb-2" htmlFor="phoneNumber">Número de teléfono:</label>
                         <input
                             className={`border px-2 py-2 text-lg rounded-sm   ${errors.phoneNumber ? "border-red-500" : "border-gray-400"}`}
                             type="text" id="phoneNumber" name="phoneNumber"
@@ -184,7 +218,13 @@ export default function RegisterForm() {
                             onChange={handleChange}
                             value={formData.phoneNumber}
                         />
-                        {errors.phoneNumber && <span className="text-red-500 text-sm mt-1">{errors.phoneNumber}</span>}
+                        {errors.phoneNumber &&
+                            <AlertComponent
+                                type="destructive"
+                                title=""
+                                description={errors.phoneNumber}
+                                iconType="error"
+                            />}
                     </div>
 
                     {/* Botón de submit */}

@@ -11,10 +11,10 @@ export const createUser = async (userData: userData, userRegistration: registerU
  Promise<{ success: boolean; data?: any; error?: string }> => {
     // Registrar el usuario en Supabase Auth
     const authResponse = await register(userRegistration);
-
+    
     if (!authResponse.success) {
         console.error("Error al registrar usuario:", authResponse.error);
-        return { success: false, error: authResponse.error };
+        return { success: false, error: authResponse.error+ "1" };
     }
 
     userData.supabaseUserId = authResponse.data.user.id; // Asignar el ID del usuario de Supabase

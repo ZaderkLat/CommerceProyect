@@ -10,48 +10,78 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Loader2 } from "lucide-react"
+
+
+import AlertComponent from "@/components/uipersonalized/alert";
+import { Car, Loader2 } from "lucide-react"
 import { login } from "@/lib/auth/sessionHandler";
 import { loginUser } from "@/interface/interfaceAuth";
+import toast from "react-hot-toast";
 export default function FormLogin() {
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+
+    const [error, setError] = useState<string | null>(null);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData((prev) => ({ ...prev, [name]: value }))
+        setError(null); // Reset error on input change
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
+
         setIsSubmitting(true);
-        const user: loginUser = {
-            email: formData.email,
-            password: formData.password
-        };
-        const response = await login(user);
-        if (!response.success) {
-            console.error("Error al iniciar sesión:", response.error);
-        }else {
-            console.log("Inicio de sesión exitoso:", response.data);
+        try {
+            const user: loginUser = {
+                email: formData.email,
+                password: formData.password
+            };
+            const response = await login(user);
+
+            if (!response.success) {
+                setError(response.error || "Error desconocido");
+                toast.error(response.error || "Error desconocido");
+                console.error("Error al iniciar sesión:", response.error);
+            } else {
+                console.log("Inicio de sesión exitoso:", response.data);
+            }
+        } catch (error) {
+            setError("Error al enviar el formulario. Por favor, inténtelo de nuevo más tarde.");
+            console.error("Error al enviar el formulario:", error);
+        } finally {
+            setIsSubmitting(false);
         }
-        setIsSubmitting(false);
         console.log("Datos del formulario:", formData);
-        
+
     }
     return (
 
         <Card className="w-full max-w-md mx-auto  shadow-lg p-6">
+            
             <CardHeader>
                 <CardTitle className="text-3xl">Inicio de sesión</CardTitle>
                 <CardDescription className="text-lg">Ingrese sus credenciales.</CardDescription>
+                {error && (
+
+                    <AlertComponent
+                        type="destructive"
+                        title={error}
+                        description=''
+                        iconType="error"
+                    />
+
+                )}
             </CardHeader>
+
             <CardContent>
+
                 <form className="flex flex-col gap-4 px-0.5 pb-4 >" onSubmit={handleSubmit}>
                     <div className="flex flex-col ">
                         <label className="text-lg font-normal pb-4" htmlFor="email" >Correo electrónico:</label>

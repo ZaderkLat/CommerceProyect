@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabaseClient";
 import { loginUser, registerUser } from "@/interface/interfaceAuth";
 import { LoginResponse } from "@/interface/interfaceAuth";
-import { registerUserData } from "@/API/users/request";
+import { handleAuthError } from "./errorSessionHandler";
 //registra un nuevo usuario
 //retorna un objeto con el estado de la operación
 export async function register(registerUser : registerUser) : Promise<LoginResponse> {
@@ -10,9 +10,9 @@ export async function register(registerUser : registerUser) : Promise<LoginRespo
         email: registerUser.email,
         password: registerUser.password
     });
-
+    console.error("Datos de registro:", data.user);
     if(error) {
-        console.error("Error al iniciar sesión:", error.message);
+        console.error("Error al registrar usuario:", error.message);
         return { success: false, error: error.message };
     }
 
@@ -26,9 +26,11 @@ export async function login(userData : loginUser) : Promise<LoginResponse> {
     });
 
     if (error) {
+        const errorMessage = handleAuthError(error);
         console.error("Error al iniciar sesión:", error.message);
-        return { success: false, error: error.message };
+        return { success: false, error: errorMessage };
     }
+    
 
     return { success: true, data: data };
 }
